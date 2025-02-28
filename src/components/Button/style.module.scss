@@ -1,0 +1,86 @@
+.button {
+    /* Základní styl tvého původního "CONTACT ME." tlačítka */
+    display: inline-block;
+    vertical-align: bottom;
+    position: relative;
+    border: 3px solid #1c1919;
+    border-radius: 9999px;
+    background-color: #1c1919;
+    color: #fff;
+    padding: 12px 36px;
+    font-size: 1.25rem;
+    font-weight: 500;
+    cursor: pointer;
+    overflow: hidden;
+  
+    /* Mírné zvětšení při hoveru */
+    transition: transform 0.2s ease;
+    &:hover {
+      transform: scale(1.05);
+  
+      /* Tady spouštíme flip animaci pro všechny .perspectiveText uvnitř tlačítka */
+      .slider .el .perspectiveText {
+        transform: rotateX(90deg);
+  
+        p {
+          &:nth-of-type(1) {
+            transform: translateY(-100%);
+            opacity: 0;
+          }
+          &:nth-of-type(2) {
+            opacity: 1;
+          }
+        }
+      }
+    }
+  
+    .slider {
+      position: relative;
+      width: 100%;
+      height: 100%;
+  
+      .el {
+        width: 100%;
+        height: 100%;
+  
+        /* První .el (bílá vrstva) */
+        background-color: #1c1919;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+  
+        
+      }
+    }
+  }
+  
+  .perspectiveText {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    transform-style: preserve-3d;
+  
+    transition: transform 0.5s cubic-bezier(0.76, 0, 0.24, 1);
+  
+    p {
+      margin: 0;
+      pointer-events: none;
+      text-transform: uppercase;
+      text-align: center;
+      font-size: 1.25rem;
+      font-weight: 500;
+      transition: all 0.5s cubic-bezier(0.76, 0, 0.24, 1);
+  
+      &:nth-of-type(2) {
+        position: absolute;
+        transform-origin: bottom center;
+        transform: rotateX(-90deg) translateY(13px);
+        opacity: 0;
+      }
+    }
+  }
+
+  
