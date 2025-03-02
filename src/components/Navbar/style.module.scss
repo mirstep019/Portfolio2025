@@ -1,0 +1,58 @@
+.dualButton {
+    /* Jako container pro CZ/EN switch */
+    position: relative;
+    width: 100px;
+    height: 32px; // 8 z Tailwindu je 2rem ~ 32px
+    border-radius: 7px; // "rounded-full"
+    overflow: hidden;
+    background-color: #1c1919; // default black
+    display: flex;
+    font-size: 0.875rem; // "text-sm"
+    border: 3px solid #1c1919;
+    z-index: 40;
+  }
+  
+  /* Levé a pravé tlačítko */
+  .dualButtonBtn {
+    width: 50%;
+    transition: background-color 0.3s, color 0.3s;
+  
+    /* Běžně černé pozadí s bílým textem */
+    background-color: #1c1919;
+    color: #fff;
+    border: none;
+    outline: none;
+    cursor: pointer;
+  }
+  
+  /* Stav, kdy je tlačítko "aktivní" (tedy bílé s černým textem) */
+  .dualButtonBtnActive {
+    background-color: #f7f1eb;
+    color: #000;
+    font-weight: 600;
+    border-radius: 5px;
+  }
+  
+  /* Hamburger */
+  .hamburger {
+    /* Kruh, černé pozadí */
+    width: 60px;  // w-9
+    height: 60px; // h-9
+    border-radius: 9999px;
+    background-color: #1c1919;
+  
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border: none;
+    outline: none;
+  }
+  
+  /* Ikona uvnitř hamburgeru – 3 linky */
+  .hamburgerIcon {
+    width: 37px;  // w-5
+    height: 37px; // h-5
+    stroke: #fff; // bílá
+  }
+  

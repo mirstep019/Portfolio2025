@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import Navbar from "@/components/Navbar";
+import Navbar from "@/components/Navbar/Navbar";
 import { useState } from "react";
 import Button from "@/components/Button/Button"; // <-- import
 
@@ -48,13 +48,12 @@ export default function Home() {
   const [isActive, setIsActive] = useState(false);
 
   return (
-    <div className="bg-[#f7f1eb] text-black min-h-screen font-['General_Sans'] relative">
-      <Navbar />
+    <div className="text-black min-h-screen font-['General_Sans'] relative">
 
       {/* Hlavní obsah */}
       <section className="flex flex-col justify-between h-[77vh] px-6 md:px-16 lg:px-24">
         {/* Nadpis (s odsazením ze stran) */}
-        <div className="relative mt-2 text-[16vw] tracking-tight font-black text-stone-900 leading-[0.7] uppercase w-full">
+        <div className="relative mt-10 text-[15vw] tracking-tight font-black text-stone-900 leading-[0.7] uppercase w-full select-none">
           <div className="text-left alpino">
             <AnimatedText text="Miroslav" />
           </div>
@@ -77,7 +76,7 @@ export default function Home() {
             animate={{ opacity: 1 }}
             transition={{ duration: 1, delay: 0.5 }}
           >
-            {["Creative", "Web Designer", "Developer", "Freelancer"].map(
+            {["Creative", "Web Developer", "Designer", "Freelancer"].map(
               (role, index) => (
                 <motion.span
                   key={index}
