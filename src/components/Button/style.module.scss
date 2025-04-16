@@ -14,9 +14,9 @@
     overflow: hidden;
   
     /* Mírné zvětšení při hoveru */
-    transition: transform 0.2s ease;
+    transition: transform 0.35s ease;
     &:hover {
-      transform: scale(1.05);
+      transform: scale(1.01);
   
       /* Tady spouštíme flip animaci pro všechny .perspectiveText uvnitř tlačítka */
       .slider .el .perspectiveText {
@@ -42,9 +42,7 @@
       .el {
         width: 100%;
         height: 100%;
-  
         /* První .el (bílá vrstva) */
-        background-color: #1c1919;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -53,6 +51,17 @@
       }
     }
   }
+
+  .overlay {
+    position: absolute;
+    height: 100%;
+    border-radius: 9999px;
+    background-color: #f7f1eb; // Nová barva při hoveru
+    z-index: 0; // pod textem
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  
   
   .perspectiveText {
     display: flex;
@@ -63,7 +72,7 @@
     width: 100%;
     transform-style: preserve-3d;
   
-    transition: transform 0.5s cubic-bezier(0.76, 0, 0.24, 1);
+    transition: transform 0.35s cubic-bezier(0.76, 0, 0.24, 1);
   
     p {
       margin: 0;
@@ -72,13 +81,14 @@
       text-align: center;
       font-size: 1.25rem;
       font-weight: 500;
-      transition: all 0.5s cubic-bezier(0.76, 0, 0.24, 1);
+      transition: all 0.4s cubic-bezier(0.76, 0, 0.24, 1);
   
       &:nth-of-type(2) {
         position: absolute;
         transform-origin: bottom center;
         transform: rotateX(-90deg) translateY(13px);
         opacity: 0;
+        color: #1c1917;
       }
     }
   }

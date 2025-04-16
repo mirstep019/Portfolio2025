@@ -1,29 +1,38 @@
-"use client"; // pokud jsi v Next.js 13 App Router
-
+"use client";
 import { motion } from "framer-motion";
 import styles from "./style.module.scss";
 
 export default function Button() {
-  // Kliknutím otevřeme Instagram
   const openInstagram = () => {
     window.open("https://instagram.com/mirasstep", "_blank");
   };
 
   return (
-    <div className={styles.button} onClick={openInstagram}>
+    <motion.div
+      className={styles.button}
+      onClick={openInstagram}
+      // Stavy animace: "rest" = výchozí, "hover" = při najetí myší
+      initial="rest"
+      whileHover="hover"
+      animate="rest"
+    >
+      {/* Overlay vrstva: v klidu pod tlačítkem, užší (60%) a posunutá dolů (top: 110%). */}
       <motion.div
-        className={styles.slider}
-        // Pokud nechceš žádnou vertikální animaci, klidně smaž initial/animate/transition:
-        initial={{ top: 0 }}
-        animate={{ top: 0 }}
-        transition={{ duration: 0.5, type: "tween", ease: [0.76, 0, 0.24, 1] }}
-      >
-        {/* Jedna vrstva (el) s textem */}
-        <div className={styles.el} >
+        className={styles.overlay}
+        variants={{
+          rest: { top: "110%", width: "60%" },
+          hover: { top: "0%", width: "100%" },
+        }}
+        transition={{ duration: 0.35, ease: [0.76, 0, 0.24, 1] }}
+      />
+
+      {/* Vrstva s textem */}
+      <motion.div className={styles.slider}>
+        <div className={styles.el}>
           <PerspectiveText label="CONTACT ME." />
         </div>
       </motion.div>
-    </div>
+    </motion.div>
   );
 }
 

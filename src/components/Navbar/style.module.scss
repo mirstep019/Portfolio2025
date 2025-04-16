@@ -1,58 +1,68 @@
 .dualButton {
-    /* Jako container pro CZ/EN switch */
-    position: relative;
-    width: 100px;
-    height: 32px; // 8 z Tailwindu je 2rem ~ 32px
-    border-radius: 7px; // "rounded-full"
-    overflow: hidden;
-    background-color: #1c1919; // default black
-    display: flex;
-    font-size: 0.875rem; // "text-sm"
-    border: 3px solid #1c1919;
-    z-index: 40;
-  }
-  
-  /* Levé a pravé tlačítko */
-  .dualButtonBtn {
-    width: 50%;
-    transition: background-color 0.3s, color 0.3s;
-  
-    /* Běžně černé pozadí s bílým textem */
-    background-color: #1c1919;
-    color: #fff;
-    border: none;
-    outline: none;
-    cursor: pointer;
-  }
-  
-  /* Stav, kdy je tlačítko "aktivní" (tedy bílé s černým textem) */
-  .dualButtonBtnActive {
-    background-color: #f7f1eb;
-    color: #000;
-    font-weight: 600;
-    border-radius: 5px;
-  }
-  
-  /* Hamburger */
-  .hamburger {
-    /* Kruh, černé pozadí */
-    width: 60px;  // w-9
-    height: 60px; // h-9
-    border-radius: 9999px;
-    background-color: #1c1919;
-  
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    border: none;
-    outline: none;
-  }
-  
-  /* Ikona uvnitř hamburgeru – 3 linky */
-  .hamburgerIcon {
-    width: 37px;  // w-5
-    height: 37px; // h-5
-    stroke: #fff; // bílá
-  }
-  
+  /* Kontejner pro CZ/EN switch */
+  position: relative;
+  width: 100px;
+  height: 32px; // 8 z Tailwindu je 2rem ~ 32px
+  border-radius: 7px;
+  overflow: hidden;
+  background-color: #1c1919; // default black
+  display: flex;
+  font-size: 0.875rem; // "text-sm"
+  border: 3px solid #1c1919;
+  z-index: 40;
+}
+
+/* Pohyblivá světlá vrstva (highlight) */
+.highlight {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 50%;
+  height: 100%;
+  background-color: #f7f1eb; /* Světlá barva */
+  border-radius: 7px;
+  z-index: 0; /* Aby ležela pod textem tlačítek */
+}
+
+/* Každé tlačítko zabírá 50% šířky, pozadí je průhledné */
+.dualButtonBtn {
+  width: 50%;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  background-color: transparent; // průhledné, highlight se vykresluje pod ním
+  transition: color 0.3s;
+  z-index: 1; // text nad highlightem
+}
+
+/* (Nepoužité, klidně můžeš smazat) 
+.dualButtonBtnActive {
+  background-color: #f7f1eb;
+  color: #000;
+  font-weight: 600;
+  border-radius: 5px;
+} 
+*/
+
+/* Hamburger */
+.hamburger {
+  /* Kruh, černé pozadí */
+  width: 60px;  // w-9
+  height: 60px; // h-9
+  border-radius: 9999px;
+  background-color: #1c1919;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border: none;
+  outline: none;
+}
+
+/* Ikona uvnitř hamburgeru – 3 linky */
+.hamburgerIcon {
+  width: 37px;  // w-5
+  height: 37px; // h-5
+  stroke: #f7f1eb; 
+}
