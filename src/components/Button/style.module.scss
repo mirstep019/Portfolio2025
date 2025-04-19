@@ -7,7 +7,7 @@
     border-radius: 9999px;
     background-color: #1c1919;
     color: #fff;
-    padding: 12px 36px;
+    padding: 16px 38px;
     font-size: 1.25rem;
     font-weight: 500;
     cursor: pointer;
@@ -16,7 +16,7 @@
     /* Mírné zvětšení při hoveru */
     transition: transform 0.35s ease;
     &:hover {
-      transform: scale(1.01);
+      transform: scale(1.02);
   
       /* Tady spouštíme flip animaci pro všechny .perspectiveText uvnitř tlačítka */
       .slider .el .perspectiveText {

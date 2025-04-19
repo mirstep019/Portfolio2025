@@ -4,9 +4,8 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import styles from "./style.module.scss";
 
-/* Animace nav (přílet shora) */
 const navbarVariants = {
-  hidden: { y: -80, opacity: 0 },
+  hidden: { y: 0, opacity: 0 },
   show: {
     y: 0,
     opacity: 1,
@@ -19,7 +18,6 @@ const navbarVariants = {
   },
 };
 
-/* Kontejner s "staggerChildren" */
 const containerVariants = {
   hidden: {},
   show: {
@@ -29,7 +27,6 @@ const containerVariants = {
   },
 };
 
-/* Přiletí shora */
 const itemVariants = {
   hidden: { y: -30, opacity: 0 },
   show: {
@@ -39,18 +36,10 @@ const itemVariants = {
   },
 };
 
-/* Definice typu pro theme prop */
-type NavbarProps = {
-  theme?: "light" | "dark";
-};
 
-export default function Navbar({ theme = "light" }: NavbarProps) {
+export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
-
-  // Přepínač jazyka
   const [lang, setLang] = useState<"CZ" | "EN">("EN");
-
-  // Lokální čas
   const [timeString, setTimeString] = useState("");
 
   useEffect(() => {
@@ -73,59 +62,63 @@ export default function Navbar({ theme = "light" }: NavbarProps) {
     setLang((prev) => (prev === "CZ" ? "EN" : "CZ"));
   };
 
-  // Barvy pro brand/hamburger dle theme
-  const brandColor = theme === "dark" ? "#f7f1eb" : "#1c1919";
-  const hamburgerColor = theme === "dark" ? "#f7f1eb" : "#1c1919";
-  const hamburgerLines = theme === "dark" ? "#1c1919" : "#f7f1eb";
-
   return (
-    <motion.nav
+    /* ── 1. vrstva navu – přes celou šířku ───────────────────────────── */
+    <motion.div
       variants={navbarVariants}
       initial="hidden"
       animate="show"
       className="
-        px-4 md:px-6 py-3 
-        // Původní background (#f7f1eb) nahrazen za 'transparent',
-        // abychom při dark sekci neměli světlý pruh.
-        bg-transparent
-        text-black
+        absolute inset-x-0 top-0        /* full‑width, mimo flow */
+        h-[75px]
+        px-8 md:px-12 lg:px-10
+        flex items-center               /* vertikální centrování */
+        bg-transparent text-black
+        z-50
       "
     >
-      {/* 1) Hlavní řádek (jen pro layout) – brand/hamb tu neviditelné */}
+      {/* ── 2. kontejner: levá | pravá strana ───────────────────────── */}
       <motion.div
-        className="flex justify-between items-center"
+        className="flex w-full justify-between items-center"
         variants={containerVariants}
       >
-        {/* Levá část (brand invis + based in...) */}
-        <motion.div
-          className="flex items-center space-x-6"
-          variants={containerVariants}
-        >
-          <motion.h1
-            className="text-xl font-bold tracking-tight select-none invisible"
-            variants={itemVariants}
-          >
+        {/* ▼ LEVÁ STRANA  */}
+        <motion.div className="flex items-center space-x-6" variants={containerVariants}>
+          <motion.h1 className="text-xl font-bold tracking-tight select-none" variants={itemVariants}>
             mirastep.
           </motion.h1>
 
-          {/* based in czech republic | local time */}
-          <motion.div
-            className="hidden md:flex items-center space-x-5 text-lg text-gray-500"
-            variants={itemVariants}
-          >
-            <span>based in czech republic</span>
+          <motion.div className="hidden lg:flex items-center space-x-5 text-xl text-gray-500" variants={itemVariants}>
+          <span>based in czech republic</span>
             <span>|</span>
             <span>local time {timeString}</span>
           </motion.div>
         </motion.div>
 
-        {/* Pravá část (CZ/EN + hamburger invis) */}
-        <motion.div
-          className="flex items-center space-x-10"
-          variants={containerVariants}
-        >
-          {/* Duální tlačítko */}
-          <motion.div variants={itemVariants}>
+        {/* ▼ PRAVÁ STRANA  */}
+        <motion.div className="flex items-center space-x-10" variants={containerVariants}>
+          {/* Linky */}
+          <motion.div
+            className="hidden lg:flex items-center space-x-2 text-xl text-gray-700 font-medium tracking-wide"
+            variants={containerVariants}
+              >
+            {["About", "Services", "Contact"].map((link, index) => (
+              <div key={index} className="flex items-center">
+                <motion.div className="relative overflow-hidden group cursor-pointer" variants={itemVariants}>
+                  <span className="block group-hover:-translate-y-full transition-transform duration-300">
+                    {link}
+                  </span>
+                  <span className="absolute left-0 top-full block group-hover:top-0 transition-all duration-300">
+                    {link}
+                  </span>
+                </motion.div>
+                {index !== 2 && <span className="mx-0 text-gray-500 select-none">,</span>}
+              </div>
+            ))}
+          </motion.div>
+
+           {/* Duální tlačítko */}
+           <motion.div variants={itemVariants}>
             <div className={styles.dualButton}>
               <motion.div
                 className={styles.highlight}
@@ -154,76 +147,8 @@ export default function Navbar({ theme = "light" }: NavbarProps) {
               </button>
             </div>
           </motion.div>
-
-          <motion.button
-            onClick={() => setIsOpen(!isOpen)}
-            className={`${styles.hamburger} invisible`}
-            variants={itemVariants}
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              strokeWidth="2.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className={styles.hamburgerIcon}
-              viewBox="0 0 24 24"
-            >
-              <line x1="3" y1="8" x2="21" y2="8" />
-              <line x1="3" y1="16" x2="21" y2="16" />
-            </svg>
-          </motion.button>
         </motion.div>
       </motion.div>
-
-      {/* 2) Vrstva FIXNÍ: brand + hamburger (viditelné) */}
-      <motion.div
-        className="
-          pointer-events-none
-          fixed top-0 left-0 w-full 
-          px-4 md:px-6 py-3
-          flex justify-between items-center
-          z-50
-        "
-        variants={containerVariants}
-      >
-        <motion.h1
-          className="
-            text-xl font-bold tracking-tight select-none
-            pointer-events-auto
-          "
-          variants={itemVariants}
-          style={{ color: brandColor }}
-        >
-          mirastep.
-        </motion.h1>
-
-        <motion.button
-          onClick={() => setIsOpen(!isOpen)}
-          className={`
-            pointer-events-auto
-            ${styles.hamburger}
-          `}
-          variants={itemVariants}
-          // Nastavíme barvu kruhu hamburgeru
-          style={{ backgroundColor: hamburgerColor }}
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            strokeWidth="2.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            className={styles.hamburgerIcon}
-            viewBox="0 0 24 24"
-            // Linky hamburgeru
-            style={{ stroke: hamburgerLines }}
-          >
-            <line x1="3" y1="8" x2="21" y2="8" />
-            <line x1="3" y1="16" x2="21" y2="16" />
-          </svg>
-        </motion.button>
-      </motion.div>
-    </motion.nav>
+    </motion.div>
   );
 }
