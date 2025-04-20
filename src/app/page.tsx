@@ -29,9 +29,8 @@ export default function Home() {
     <main ref={containerRef} className="relative">
       <Navbar />                                             {/* už žádné theme */}
       <Section1 scrollYProgress={scrollYProgress} />         {/* bez navbarTheme */}
-      <div ref={blackRef}>
-        <Section2 scrollYProgress={scrollYProgress} />
-      </div>
+      <Section2 />
+      <Section1 scrollYProgress={scrollYProgress} />         {/* bez navbarTheme */}
     </main>
   );
 }

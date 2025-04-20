@@ -1,4 +1,4 @@
-/* 1️⃣ Načtení fontů (FontShare) */
+@import url('https://fonts.googleapis.com/css2?family=Alex+Brush&display=swap');
 @import url("https://api.fontshare.com/v2/css?f[]=alpino@400,700,900&f[]=general-sans@300,400,500,600,700&f[]=plus-jakarta-sans@400,500,700&display=swap");
 @import "tailwindcss";
 
@@ -9,7 +9,6 @@
   --foreground: #171717;
 }
 
-
 /* 5️⃣ Výchozí nastavení */
 body {
   color: var(--foreground);
@@ -17,15 +16,8 @@ body {
   font-family: "General Sans", sans-serif;
 }
 
-/* Specifické styly pro jednotlivé fonty */
-.alpino {
-  font-family: "Alpino", sans-serif;
-}
-
-.general-sans {
-  font-family: "General Sans", sans-serif;
-}
-
-.plus-jakarta {
-  font-family: "Plus Jakarta Sans", sans-serif;
-}
+/* utilitní třídy */
+.alex-brush   { font-family: "Alex Brush", cursive; }   /* ✅ název v kódu níže */
+.alpino       { font-family: "Alpino", sans-serif; }
+.general-sans { font-family: "General Sans", sans-serif; }
+.plus-jakarta { font-family: "Plus Jakarta Sans", sans-serif; }

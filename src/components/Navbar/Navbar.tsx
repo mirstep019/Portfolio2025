@@ -1,16 +1,19 @@
+/* ------------------------------------------------------------------
+   Navbar – plynulé zleva‑doprava načítání všech prvků (Framer Motion)
+   ------------------------------------------------------------------ */
 "use client";
 
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import styles from "./style.module.scss";
 
+/* ---------- variants ---------- */
 const navbarVariants = {
-  hidden: { y: 0, opacity: 0 },
+  hidden: { opacity: 0 },
   show: {
-    y: 0,
     opacity: 1,
     transition: {
-      duration: 0.7,
+      duration: 0.4,
       delay: 2,
       ease: "easeOut",
       when: "beforeChildren",
@@ -21,90 +24,85 @@ const navbarVariants = {
 const containerVariants = {
   hidden: {},
   show: {
-    transition: {
-      staggerChildren: 0.3,
-    },
+    transition: { staggerChildren: 0.25 }, // pořadí: brand → based‑in → odkazy → dualBtn
   },
 };
 
 const itemVariants = {
-  hidden: { y: -30, opacity: 0 },
-  show: {
-    y: 0,
-    opacity: 1,
-    transition: { duration: 0.5, ease: "easeOut" },
-  },
+  hidden: { y: -40, opacity: 0 }, // slide‑in zleva
+  show: { y: 0, opacity: 1, transition: { duration: 0.4, ease: "easeOut" } },
 };
 
-
+/* ---------- component ---------- */
 export default function Navbar() {
-  const [isOpen, setIsOpen] = useState(false);
   const [lang, setLang] = useState<"CZ" | "EN">("EN");
-  const [timeString, setTimeString] = useState("");
+  const [timeString, setTime] = useState("");
 
+  /* local time updater ------------------------------------------------ */
   useEffect(() => {
-    const updateTime = () => {
+    const tick = () => {
       const now = new Date();
-      let hours = now.getHours();
-      const minutes = now.getMinutes();
-      const ampm = hours >= 12 ? "pm" : "am";
-      hours = hours % 12 || 12;
-      const hh = String(hours).padStart(2, "0");
-      const mm = String(minutes).padStart(2, "0");
-      setTimeString(`${hh}:${mm} ${ampm}`);
+      const h12 = now.getHours() % 12 || 12;
+      const hh = String(h12).padStart(2, "0");
+      const mm = String(now.getMinutes()).padStart(2, "0");
+      const ampm = now.getHours() >= 12 ? "pm" : "am";
+      setTime(`${hh}:${mm} ${ampm}`);
     };
-    updateTime();
-    const interval = setInterval(updateTime, 30000);
-    return () => clearInterval(interval);
+    tick();
+    const id = setInterval(tick, 30_000);
+    return () => clearInterval(id);
   }, []);
 
-  const toggleLang = () => {
-    setLang((prev) => (prev === "CZ" ? "EN" : "CZ"));
-  };
+  const toggleLang = () => setLang((prev) => (prev === "CZ" ? "EN" : "CZ"));
 
+  /* ------------------------------------------------------------------ */
   return (
-    /* ── 1. vrstva navu – přes celou šířku ───────────────────────────── */
-    <motion.div
+    <motion.div /* 1. vrstva přes celou šířku */
       variants={navbarVariants}
       initial="hidden"
       animate="show"
       className="
-        absolute inset-x-0 top-0        /* full‑width, mimo flow */
-        h-[75px]
-        px-8 md:px-12 lg:px-10
-        flex items-center               /* vertikální centrování */
-        bg-transparent text-black
-        z-50
-      "
+           absolute inset-x-0 top-0 h-[75px]
+           px-8 md:px-12 lg:px-10
+           flex items-center bg-transparent text-black z-50
+         "
     >
-      {/* ── 2. kontejner: levá | pravá strana ───────────────────────── */}
+      {/* jediný kontejner se staggerem */}
       <motion.div
         className="flex w-full justify-between items-center"
         variants={containerVariants}
+        initial="hidden"
+        animate="show"
       >
-        {/* ▼ LEVÁ STRANA  */}
-        <motion.div className="flex items-center space-x-6" variants={containerVariants}>
-          <motion.h1 className="text-xl font-bold tracking-tight select-none" variants={itemVariants}>
+        {/* ----------------- LEVÁ STRANA ----------------- */}
+        <div className="flex items-center space-x-6">
+          <motion.h1
+            variants={itemVariants}
+            className="text-xl font-bold tracking-tight select-none"
+          >
             mirastep.
           </motion.h1>
 
-          <motion.div className="hidden lg:flex items-center space-x-5 text-xl text-gray-500" variants={itemVariants}>
-          <span>based in czech republic</span>
+          <motion.div
+            variants={itemVariants}
+            className="hidden lg:flex items-center space-x-5 text-xl text-gray-500"
+          >
+            <span>based in czech republic</span>
             <span>|</span>
             <span>local time {timeString}</span>
           </motion.div>
-        </motion.div>
+        </div>
 
-        {/* ▼ PRAVÁ STRANA  */}
-        <motion.div className="flex items-center space-x-10" variants={containerVariants}>
-          {/* Linky */}
-          <motion.div
-            className="hidden lg:flex items-center space-x-2 text-xl text-gray-700 font-medium tracking-wide"
-            variants={containerVariants}
-              >
-            {["About", "Services", "Contact"].map((link, index) => (
-              <div key={index} className="flex items-center">
-                <motion.div className="relative overflow-hidden group cursor-pointer" variants={itemVariants}>
+        {/* ----------------- PRAVÁ STRANA ----------------- */}
+        <div className="flex items-center space-x-10">
+          {/* ► odkazy + čárky */}
+          <div className="hidden lg:flex items-center space-x-2 text-xl text-gray-700 font-medium tracking-wide">
+            {["About", "Services", "Contact"].map((link, i) => (
+              <div key={link} className="flex items-center">
+                <motion.div
+                  variants={itemVariants}
+                  className="relative overflow-hidden group cursor-pointer"
+                >
                   <span className="block group-hover:-translate-y-full transition-transform duration-300">
                     {link}
                   </span>
@@ -112,13 +110,21 @@ export default function Navbar() {
                     {link}
                   </span>
                 </motion.div>
-                {index !== 2 && <span className="mx-0 text-gray-500 select-none">,</span>}
+
+                {i !== 2 && (
+                  <motion.span
+                    variants={itemVariants}
+                    className="mx-0 text-gray-500 select-none"
+                  >
+                    ,
+                  </motion.span>
+                )}
               </div>
             ))}
-          </motion.div>
+          </div>
 
-           {/* Duální tlačítko */}
-           <motion.div variants={itemVariants}>
+          {/* ► CZ / EN dual button */}
+          <motion.div variants={itemVariants}>
             <div className={styles.dualButton}>
               <motion.div
                 className={styles.highlight}
@@ -147,7 +153,7 @@ export default function Navbar() {
               </button>
             </div>
           </motion.div>
-        </motion.div>
+        </div>
       </motion.div>
     </motion.div>
   );
