@@ -2,6 +2,7 @@
 import "./globals.css";
 import { useEffect } from "react";
 import Lenis from "lenis";
+import Grain from "@/components/GrainTexture/Grain";
 
 export default function RootLayout({
   children,
@@ -32,7 +33,10 @@ export default function RootLayout({
 
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <Grain/>
+        {children}
+      </body>
     </html>
   );
 }

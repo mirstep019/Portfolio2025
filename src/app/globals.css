@@ -21,3 +21,33 @@ body {
 .alpino       { font-family: "Alpino", sans-serif; }
 .general-sans { font-family: "General Sans", sans-serif; }
 .plus-jakarta { font-family: "Plus Jakarta Sans", sans-serif; }
+
+
+.grain-inside {
+  position: relative;
+  z-index: 0;
+}
+
+.grain-inside::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url('../../public/img/texture.png');
+  background-repeat: repeat;
+  background-size: 800px;
+  opacity: 0.35;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.grain-overlay::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url('../../public/img/texture.png');
+  background-repeat: repeat;
+  background-size: 700px 700px; /* uprav dle gusta */
+  opacity: 0.35; /* uprav dle gusta */
+  pointer-events: none;
+  z-index: -1;
+}

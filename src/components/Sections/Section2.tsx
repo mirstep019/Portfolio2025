@@ -42,7 +42,7 @@ export default function Section2() {
       {/* Černá sekce – jen 150 vh */}
       <section
         ref={ref}
-        className="relative h-[300vh] bg-[#1c1919] text-white rounded-xl lg:rounded-[30px] overflow-hidden"
+        className="grain-inside relative h-[300vh] bg-[#1c1919] text-white rounded-xl lg:rounded-[30px] overflow-hidden"
       >
         {/* Pevný textový blok */}
         <motion.div
