@@ -48,11 +48,12 @@ function AnimatedLine({
 }
 
 export default function Section2() {
-  const ref = useRef<HTMLElement>(null);
+  /* 1️⃣ DOM ref */
+  const ref = useRef<HTMLElement | null>(null);
 
   const { scrollYProgress } = useScroll({
     target: ref,
-    offset: ["start start", "end end"],
+    offset: ["start start", "end -25%"],
   });
 
   const containerOpacity = useTransform(scrollYProgress, [0, 0.06], [0, 1]);
