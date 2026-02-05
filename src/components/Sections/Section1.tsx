@@ -49,8 +49,8 @@ type Section1Props = {
 
 export default function Section1({ scrollYProgress }: Section1Props) {
   // scale + opacity při scrollu
-  const scale = useTransform(scrollYProgress, [0, 0.9], [1, 0.9]);
-  const opacity = useTransform(scrollYProgress, [0, 0.4], [1, 0]);
+  const scale = useTransform(scrollYProgress, [0, 0.8], [1, 0.8]);
+  const opacity = useTransform(scrollYProgress, [0, 0.9], [1, 0]);
 
   return (
     <>
@@ -121,7 +121,7 @@ export default function Section1({ scrollYProgress }: Section1Props) {
               <motion.p
                 className="
          text-xl sm:text-2xl md:text-2xl lg:text-3xl xl:text-3xl
-    text-gray-700 max-w-md plus-jakarta font-medium
+    text-gray-700 max-w-xl plus-jakarta font-medium
     mx-auto
       "
                 initial={{ opacity: 0, y: 10 }}

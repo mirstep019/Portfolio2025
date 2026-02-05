@@ -3,82 +3,110 @@
 import { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 
+const ACCENT = "#124e44";
+const SILHOUETTE_OPACITY = 0.18;
+
+/* ───────── komponenta pro jediný řádek ───────── */
+function AnimatedLine({
+  text,
+  start,
+  end,
+  progress,
+  className,
+}: {
+  text: string;
+  start: number;
+  end: number;
+  progress: ReturnType<typeof useScroll>["scrollYProgress"];
+  className: string;
+}) {
+  const letters = text.split("");
+  const total = letters.length;
+
+  return (
+    <span className={`${className} relative block`}>
+      <span
+        className="absolute inset-0 select-none"
+        style={{ color: ACCENT, opacity: SILHOUETTE_OPACITY }}
+      >
+        {text}
+      </span>
+
+      {letters.map((char, i) => {
+        const letterStart = start + (i / total) * (end - start);
+        const letterEnd = start + ((i + 1) / total) * (end - start);
+        const opacity = useTransform(progress, [letterStart, letterEnd], [0, 1]);
+
+        return (
+          <motion.span key={i} style={{ opacity, color: ACCENT }}>
+            {char}
+          </motion.span>
+        );
+      })}
+    </span>
+  );
+}
+
 export default function Section2() {
   const ref = useRef<HTMLElement>(null);
 
-  /* progress jen pro tuto sekci (0 → 1) */
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start start", "end end"],
   });
 
-  /* ── 1. FÁZE: pomalejší fade‑in řádků ────────────────────────── */
-  const line1Opacity = useTransform(scrollYProgress, [0.05, 0.15], [0, 1]);
-  const line2Opacity = useTransform(scrollYProgress, [0.15, 0.25], [0, 1]);
-  const line3Opacity = useTransform(scrollYProgress, [0.25, 0.35], [0, 1]);
-
-  /* ── 2. FÁZE: růst čáry (0 vh → 100 vh) až do konce sekce ───── */
-  const barHeight   = useTransform(scrollYProgress, [0.35, 1], ["0vh", "100vh"]);
-
-  /* ── 3. FÁZE: odjezd textu nahoru – zůstane fixně, pak zmizí ── */
-  const translateY  = useTransform(
-    scrollYProgress,
-    [0, 0.4, 0.7],
-    ["-50%", "-50%", "-250%"]
-  );
+  const containerOpacity = useTransform(scrollYProgress, [0, 0.06], [0, 1]);
+  const translateY = useTransform(scrollYProgress, [0, 0.58, 0.92], ["-50%", "-50%", "-320%"]);
 
   return (
     <section
       ref={ref}
-      className="
-        relative h-[350vh]            /* prostor pro celý průběh */
-        bg-[#1c1919] text-white
-        rounded-xl lg:rounded-[30px]
-        overflow-hidden
-      "
+      id="section2"
+      data-scroll-section
+      className="relative h-[550vh] bg-[#1c1919] rounded-xl lg:rounded-[30px] overflow-hidden"
     >
-      {/* ------------ TEXT + ČÁRA (fixní vrstva) -------------- */}
+      {/* fixní vrstva – text + čára */}
       <motion.div
-        style={{ translateY }}
+        data-scroll
+        data-scroll-sticky
+        data-scroll-target="#section2"
+        data-scroll-css-progress
+        style={{ translateY, opacity: containerOpacity }}
         className="
-          fixed top-1/2 left-1/2 -translate-x-1/2
-          flex flex-col items-center text-center
-          pointer-events-none
+           fixed top-1/2 left-1/2 -translate-x-1/2
+          flex flex-col items-center text-center pointer-events-none 
         "
       >
-        {/* ✨ Tři řádky ✨ */}
-        <div className="flex flex-col leading-none space-y-3 z-10">
-          <motion.h2
-            style={{ opacity: line1Opacity }}
-            className="text-[9vw] sm:text-[6vw] font-[700] alpino uppercase"
-          >
-            MAKING
-          </motion.h2>
+        <AnimatedLine
+          text="MAKING"
+          start={0.06}
+          end={0.26}
+          progress={scrollYProgress}
+          className="text-[9vw] sm:text-[6vw] font-[700] alpino uppercase leading-none"
+        />
 
-          <motion.h2
-            style={{ opacity: line2Opacity }}
-            className="text-[9vw] sm:text-[7.5vw] alex-brush italic"
-          >
-            websites
-          </motion.h2>
+        <AnimatedLine
+          text="websites"
+          start={0.26}
+          end={0.46}
+          progress={scrollYProgress}
+          className="text-[9vw] sm:text-[7.5vw] alex-brush italic leading-none"
+        />
 
-          <motion.h2
-            style={{ opacity: line3Opacity }}
-            className="text-[9vw] sm:text-[6.5vw] general-sans font-semibold"
-          >
-            Outstanding<span>.</span>
-          </motion.h2>
-        </div>
+        <AnimatedLine
+          text="Outstanding."
+          start={0.46}
+          end={0.58}
+          progress={scrollYProgress}
+          className="text-[9vw] sm:text-[6.5vw] general-sans font-semibold leading-none"
+        />
 
-        {/* ↓ Rostoucí čára ↓ */}
-        <motion.span
-          style={{ height: barHeight }}
-          className="
-            absolute top-full mt-6
-            left-1/2 -translate-x-1/2
-            w-[7px] bg-white origin-top
-            rounded-b-full
-          "
+        {/* čára řízená pomocí --progress */}
+        <span
+          className="absolute top-full mt-6 left-1/2 -translate-x-1/2 w-[7px] origin-top rounded-b-full bg-[#124e44]"
+          style={{
+            height: "calc(var(--progress, 0) * 100vh)",
+          }}
         />
       </motion.div>
     </section>
